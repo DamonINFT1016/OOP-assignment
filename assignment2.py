@@ -24,10 +24,10 @@ class Alchemist():
         self.__recipies = recipies
     
     def getlaboratory(self):
-        pass
+        return self.__laboratory
 
     def getRecipies(self):
-        pass
+        return self.__recipies
 
     def mixPotion(self, recipe):
         pass
@@ -77,16 +77,16 @@ class Potion(ABC):
         pass
 
     def getName(self):
-        pass
+        return self.__name
 
     def getStat(self):
-        pass
+        return self.__stat
 
     def getBoost(self):
-        pass
+        return self.__boost
 
     def setBoost(self, boost):
-        pass
+        self.__boost = boost
 
 
 
@@ -99,11 +99,11 @@ class SuperPotion(Potion):
     def calculateBoost(self):
         return super().calculateBoost() #Revise super method for abstractmethods
     
-    def getHerb(self, herb):
-        pass
+    def getHerb(self):
+        return self.__herb
 
-    def getCatalist(self, catalist):
-        pass
+    def getCatalist(self):
+        return self.__catalyst
 
 
 
@@ -117,10 +117,10 @@ class ExtremePotion(Potion):
         return super().calculateBoost() #Revise super method for abstractmethods
     
     def getReagant(self):
-        pass
+        return self.__reagant
 
     def getPotion(self):
-        pass
+        return self.__potion
 
 
 
@@ -134,13 +134,14 @@ class Reagent(ABC):
         pass
 
     def getName(self):
-        pass
+        return self.__name
 
     def getPotency(self):
-        pass
+        return self.__potency
 
     def setPotency(self, boost):
-        pass
+        self.__potency = boost
+        
 
 
 
@@ -150,10 +151,10 @@ class Herb(Reagent):
         self.__grimy = grimy
 
     def getGrimy(self):
-        pass
+        return self.__grimy
 
     def setGrimy(self, grimy:bool):
-        pass
+        self.__grimy = grimy
 
         
 
@@ -168,7 +169,7 @@ class Catalyst(Reagent):
         pass
 
     def getQuality(self):
-        pass
+        return self.__quality
 
 
 
