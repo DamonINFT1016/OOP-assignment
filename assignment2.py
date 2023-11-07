@@ -13,7 +13,7 @@ from abc import ABC, abstractmethod
 #@abstractmethod
 
 class Alchemist():
-    def __init__(self, attack = 0, strength = 0, defence = 0, magic = 0, ranged = 0, necromancy = 0, laboratory="laboratory", recipies={} ):
+    def __init__(self, attack = 0, strength = 0, defence = 0, magic = 0, ranged = 0, necromancy = 0, laboratory="laboratory", recipes={"Super Attack": ["Irit","Eye of Newt"], "Super Strength" : ["Kwuarm", "Limpwurt Root"], "Super Defence": ["Cadantine", "White Berries"], "Super Magic": ["Lantadyme", "Potato Cactus"], "Super Ranging": ["Dwarf Weed","Wine of Zamorak"], "Super Necromancy" : ["Arbuck", "Blood of Orcus"], "Extreme Attack": ["Avantoe", "Super Attack"], "Extreme Strength": ["Dwarf Weed", "Super Strength"], "Extreme Defence": ["Lantadyme", "Super Defence"], "Extreme Magic": ["Ground Mud Rune", "Super Magic"], "Extreme Ranging": ["Grenwall Spike", "Super Ranging"], "Extreme Necromancy": ["Ground Miasma Rune", "Super Necromancy"]} ):
         self.__attack = attack
         self.__strength = strength
         self.__defence = defence
@@ -21,16 +21,19 @@ class Alchemist():
         self.__ranged = ranged
         self.__necromancy = necromancy
         self.__laboratory = laboratory
-        self.__recipies = recipies
+        self.__recipes = recipes
     
     def getlaboratory(self):
         return self.__laboratory
 
     def getRecipies(self):
-        return self.__recipies
+        return self.__recipes
 
     def mixPotion(self, recipe):
-        pass
+        x = self.__recipes.keys(recipe)
+
+        
+        
 
     def drinkPotion(self, potion):
         pass
