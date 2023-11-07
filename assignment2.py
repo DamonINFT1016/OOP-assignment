@@ -32,9 +32,6 @@ class Alchemist():
     def mixPotion(self, recipe):
         x = self.__recipes.keys(recipe)
 
-        
-        
-
     def drinkPotion(self, potion):
         pass
 
@@ -77,7 +74,8 @@ class Potion(ABC):
 
     @abstractmethod
     def calculateBoost(self):
-        pass
+        if self.__name == "Super Attack" or self.__name == "Super Strength" or self.__name == "Super Defence" or self.__name == "Super Magic" or self.__name == "Super Ranging" or self.__name == "Super Necromancy":
+            self.__boost = 0
 
     def getName(self):
         return self.__name
@@ -91,10 +89,12 @@ class Potion(ABC):
     def setBoost(self, boost):
         self.__boost = boost
 
+    boost = property(getBoost, setBoost)
+
 
 
 class SuperPotion(Potion):
-    def __init__(self, herb, catalyst ,name="name", stat=0, boost=0): #possible problem with order of the items care
+    def __init__(self, herb, catalyst, name="name", stat=0, boost=0): #possible problem with order of the items care
         super().__init__(name, stat, boost)
         self.__herb = herb
         self.__catalyst = catalyst
@@ -144,6 +144,8 @@ class Reagent(ABC):
 
     def setPotency(self, boost):
         self.__potency = boost
+
+    potency = property(getPotency, setPotency)
         
 
 
@@ -159,6 +161,8 @@ class Herb(Reagent):
     def setGrimy(self, grimy:bool):
         self.__grimy = grimy
 
+    grimy = property(getGrimy, setGrimy)
+
         
 
 
@@ -173,6 +177,4 @@ class Catalyst(Reagent):
 
     def getQuality(self):
         return self.__quality
-
-
 
