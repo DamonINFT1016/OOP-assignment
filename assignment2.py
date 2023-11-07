@@ -26,11 +26,12 @@ class Alchemist():
     def getlaboratory(self):
         return self.__laboratory
 
-    def getRecipies(self):
+    def getRecipes(self):
         return self.__recipes
 
     def mixPotion(self, recipe):
-        x = self.__recipes.keys(recipe)
+        x = self.__recipes.get(recipe)
+        return x
 
     def drinkPotion(self, potion):
         pass
@@ -44,7 +45,10 @@ class Alchemist():
 
 
 class Laboratory():
-    def __init__(self, potions = [], herbs = [], catalyst = [] ):
+
+    jim = Alchemist()
+
+    def __init__(self, potions = ["Super Attack", "Super Strength", "Super Defence", "Super Magic", "Super Ranging", "Super Necromancy", "Extreme Attack", "Extreme Strength", "Extreme Defence", "Extreme Magic", "Extreme Ranging", "Extreme Necromancy"], herbs = ["Irit", "Kwuarm", "Cadantine", "Lantadyme", "Dwarf Weed", "Arbuck", "Avantoe"], catalyst = ["Eye of Newt", "Limpwurt Root", "White Berries", "Potato Cactus", "Wine of Zamorak", "Blood of Orcus", "Ground Mud Rune", "Grenwall Spike", "Ground Miasma Rune"] ):
         self.__potions = potions 
         self.__herbs = herbs
         self.__catalyst = catalyst
@@ -74,8 +78,7 @@ class Potion(ABC):
 
     @abstractmethod
     def calculateBoost(self):
-        if self.__name == "Super Attack" or self.__name == "Super Strength" or self.__name == "Super Defence" or self.__name == "Super Magic" or self.__name == "Super Ranging" or self.__name == "Super Necromancy":
-            self.__boost = 0
+        pass
 
     def getName(self):
         return self.__name
@@ -100,7 +103,12 @@ class SuperPotion(Potion):
         self.__catalyst = catalyst
 
     def calculateBoost(self):
-        return super().calculateBoost() #Revise super method for abstractmethods
+        if self.__name == "Super Attack" or self.__name == "Super Strength" or self.__name == "Super Defence" or self.__name == "Super Magic" or self.__name == "Super Ranging" or self.__name == "Super Necromancy":
+            self.__boost = 0
+        elif self.__name == "Extreme Attack" or self.__name == "Extreme Strength" or self.__name == "Extreme Defence" or self.__name == "Extreme Magic" or self.__name == "Extreme Ranging" or self.__name == "Extreme Necromancy":
+            self.__boost = 0
+        else:
+            print("Error")
     
     def getHerb(self):
         return self.__herb
@@ -117,7 +125,8 @@ class ExtremePotion(Potion):
         self.__potion = potion
 
     def calculateBoost(self):
-        return super().calculateBoost() #Revise super method for abstractmethods
+        if self.__name == "Super Attack" or self.__name == "Super Strength" or self.__name == "Super Defence" or self.__name == "Super Magic" or self.__name == "Super Ranging" or self.__name == "Super Necromancy":
+                self.__boost = 0
     
     def getReagant(self):
         return self.__reagant
@@ -178,3 +187,8 @@ class Catalyst(Reagent):
     def getQuality(self):
         return self.__quality
 
+
+
+test = Alchemist()
+
+print(test.mixPotion("Super Magic"))
