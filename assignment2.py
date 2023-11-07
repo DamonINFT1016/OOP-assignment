@@ -30,8 +30,11 @@ class Alchemist():
         return self.__recipes
 
     def mixPotion(self, recipe):
-        x = self.__recipes.get(recipe)
-        return x
+        ingredients = self.__recipes.get(recipe)
+        primary = str(ingredients[0])
+        secondary = str(ingredients[1])
+
+        return primary + secondary
 
     def drinkPotion(self, potion):
         pass
@@ -48,7 +51,7 @@ class Laboratory():
 
     jim = Alchemist()
 
-    def __init__(self, potions = ["Super Attack", "Super Strength", "Super Defence", "Super Magic", "Super Ranging", "Super Necromancy", "Extreme Attack", "Extreme Strength", "Extreme Defence", "Extreme Magic", "Extreme Ranging", "Extreme Necromancy"], herbs = ["Irit", "Kwuarm", "Cadantine", "Lantadyme", "Dwarf Weed", "Arbuck", "Avantoe"], catalyst = ["Eye of Newt", "Limpwurt Root", "White Berries", "Potato Cactus", "Wine of Zamorak", "Blood of Orcus", "Ground Mud Rune", "Grenwall Spike", "Ground Miasma Rune"] ):
+    def __init__(self, potions = ["Super Attack", "Super Strength", "Super Defence", "Super Magic", "Super Ranging", "Super Necromancy", "Extreme Attack", "Extreme Strength", "Extreme Defence", "Extreme Magic", "Extreme Ranging", "Extreme Necromancy"], herbs = [], catalyst = [] ):
         self.__potions = potions 
         self.__herbs = herbs
         self.__catalyst = catalyst
@@ -57,16 +60,16 @@ class Laboratory():
         pass
 
     def addReagant(self, reagant, amount):
-        pass
 
-    def grabReagent(self, name):
-        pass
+        if reagant == "Irit" or reagant == "Kwuarm" or reagant == "Cadantine" or reagant == "Lantadyme" or reagant == "Dwarf Weed" or reagant == "Arbuck"or reagant == "Avantoe":
+            while amount > 0:
+                self.__herbs.append(reagant)
+                amount -= 1
+        if reagant == "Eye of Newt" or reagant == "Limpwurt Root" or reagant == "White Berries" or reagant == "Potato Cactus" or reagant == "Wine of Zamorak" or reagant == "Blood of Orcus" or reagant == "Ground Mud Rune" or reagant == "Grenwall Spike" or reagant == "Ground Miasma Rune":
+            while amount > 0:
+                self.__herbs.append(reagant)
+                amount -= 1
 
-    def cleanHerbs(self):
-        pass
-
-    def refineCatalysts(self):
-        pass
 
 
 
@@ -158,11 +161,13 @@ class Reagent(ABC):
         
 
 
-
 class Herb(Reagent):
     def __init__(self, name="name", potency=0, grimy = True):
         super().__init__(name, potency) 
         self.__grimy = grimy
+
+    def refine(self):
+        pass
 
     def getGrimy(self):
         return self.__grimy
@@ -171,9 +176,7 @@ class Herb(Reagent):
         self.__grimy = grimy
 
     grimy = property(getGrimy, setGrimy)
-
-        
-
+      
 
 
 class Catalyst(Reagent):
@@ -191,4 +194,4 @@ class Catalyst(Reagent):
 
 test = Alchemist()
 
-print(test.mixPotion("Super Magic"))
+print(test.mixPotion("Super Attack"))
