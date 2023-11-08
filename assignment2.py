@@ -7,20 +7,20 @@ EmailID: eccdc001@mymail.edu.au
 This is my own work as defined by the University's Academic Misconduct Policy.
 '''
 
-from abc import ABC, abstractmethod
 
+from abc import ABC, abstractmethod
 
 #@abstractmethod
 
 class Alchemist():
-    def __init__(self, attack = 0, strength = 0, defence = 0, magic = 0, ranged = 0, necromancy = 0, laboratory="laboratory", recipes={"Super Attack": ["Irit","Eye of Newt"], "Super Strength" : ["Kwuarm", "Limpwurt Root"], "Super Defence": ["Cadantine", "White Berries"], "Super Magic": ["Lantadyme", "Potato Cactus"], "Super Ranging": ["Dwarf Weed","Wine of Zamorak"], "Super Necromancy" : ["Arbuck", "Blood of Orcus"], "Extreme Attack": ["Avantoe", "Super Attack"], "Extreme Strength": ["Dwarf Weed", "Super Strength"], "Extreme Defence": ["Lantadyme", "Super Defence"], "Extreme Magic": ["Ground Mud Rune", "Super Magic"], "Extreme Ranging": ["Grenwall Spike", "Super Ranging"], "Extreme Necromancy": ["Ground Miasma Rune", "Super Necromancy"]} ):
+    def __init__(self, attack = 0, strength = 0, defence = 0, magic = 0, ranged = 0, necromancy = 0, recipes={"Super Attack": ["Irit","Eye of Newt"], "Super Strength" : ["Kwuarm", "Limpwurt Root"], "Super Defence": ["Cadantine", "White Berries"], "Super Magic": ["Lantadyme", "Potato Cactus"], "Super Ranging": ["Dwarf Weed","Wine of Zamorak"], "Super Necromancy" : ["Arbuck", "Blood of Orcus"], "Extreme Attack": ["Avantoe", "Super Attack"], "Extreme Strength": ["Dwarf Weed", "Super Strength"], "Extreme Defence": ["Lantadyme", "Super Defence"], "Extreme Magic": ["Ground Mud Rune", "Super Magic"], "Extreme Ranging": ["Grenwall Spike", "Super Ranging"], "Extreme Necromancy": ["Ground Miasma Rune", "Super Necromancy"]} ):
         self.__attack = attack
         self.__strength = strength
         self.__defence = defence
         self.__magic = magic
         self.__ranged = ranged
         self.__necromancy = necromancy
-        self.__laboratory = laboratory
+        self.__laboratory = Laboratory()
         self.__recipes = recipes
     
     def getlaboratory(self):
@@ -33,7 +33,29 @@ class Alchemist():
         ingredients = self.__recipes.get(recipe)
         primary = str(ingredients[0])
         secondary = str(ingredients[1])
-        return primary + secondary
+
+        nameString = recipe.split()
+        potionName = str(nameString[0])
+        type = str(nameString[1])
+        if type == "Attack":
+            stat = "attack"
+        elif type == "Strength":
+            stat = "strength"
+        elif type == "Defence":
+            stat = "defence"
+        elif type == "Magic":
+            stat = "magic"
+        elif type == "Ranging":
+            stat = "ranged"
+        elif type == "Necromancy":
+            stat = "necromancy"
+        else:
+            print("Error")
+
+
+
+        self.__laboratory.mixPotion(potionName, type, stat, primary, secondary)
+        
 
     def drinkPotion(self, potion):
         pass
@@ -42,25 +64,32 @@ class Alchemist():
         pass
 
     def refineReagent(self):
-        pass
+        Laboratory.addReagant()
 
 
 
 class Laboratory():
 
-    jim = Alchemist()
 
-    def __init__(self, potions = ["Super Attack", "Super Strength", "Super Defence", "Super Magic", "Super Ranging", "Super Necromancy", "Extreme Attack", "Extreme Strength", "Extreme Defence", "Extreme Magic", "Extreme Ranging", "Extreme Necromancy"], herbs = [], catalyst = [] ):
+    def __init__(self, potions = [], herbs = [], catalyst = [] ):
         self.__potions = potions 
         self.__herbs = herbs
         self.__catalyst = catalyst
 
     def mixPotion(self, name, type, stat, primaryIngredient, secondaryIngredient):
-        pass
+
+        print(name)
+        print(type)
+        print(stat)
+        print(primaryIngredient)
+        print(secondaryIngredient)
+
+
 
     def addReagant(self, reagant, amount):
 
         reagantName = reagant.getName()
+        print(reagantName)
         if reagantName == "Irit" or reagantName == "Kwuarm" or reagantName == "Cadantine" or reagantName == "Lantadyme" or reagantName == "Dwarf Weed" or reagantName == "Arbuck" or reagantName == "Avantoe":
             while amount > 0:
                 self.__herbs.append(reagantName)
@@ -70,12 +99,6 @@ class Laboratory():
                 self.__catalyst.append(reagantName)
                 amount -= 1
 
-    #testing DELETE METHOD
-    def getHerbs(self):
-        return self.__herbs
-    
-    def getCalalyst(self):
-        return self.__catalyst
 
 
 
@@ -180,7 +203,6 @@ class Herb(Reagent):
         Reagent.setPotency(self, potency)
         print(f"Potency is now: {potency}")
 
-
     def getGrimy(self):
         return self.__grimy
 
@@ -213,8 +235,9 @@ class Catalyst(Reagent):
 
 
 test = Alchemist()
+testLab = Laboratory()
 
-print(test.mixPotion("Super Attack"))
+test.mixPotion("Super Attack")
 
 
 
@@ -222,16 +245,17 @@ print(test.mixPotion("Super Attack"))
 # Same goes for potion
 # Create Reagant than add it to a list we can then use that from laboratory
 # EXAMPLE
-JimsLab = Laboratory()
+#JimsLab = Laboratory()
 #herb1 = Herb("Irit", True)
 #JimsLab.addReagant(herb1, 2)
 #herb1.refine()
 #print(herb1.grimy)
 #print(JimsLab.getHerbs())
 
-catalyst1 = Catalyst("Eye of Newt", 9.4)
-catalyst1.refine()
-
+#catalyst1 = Catalyst("Eye of Newt", 9.4)
+#catalyst1.refine()
+#JimsLab.addReagant(catalyst1, 2)
+#"Super Attack", "Super Strength", "Super Defence", "Super Magic", "Super Ranging", "Super Necromancy", "Extreme Attack", "Extreme Strength", "Extreme Defence", "Extreme Magic", "Extreme Ranging", "Extreme Necromancy"
 
 #TODO
 #class Potion creation
@@ -245,3 +269,5 @@ catalyst1.refine()
 #Testing
 #Error Handling
 # Doc strings
+# if 0 <= stength <=:
+
