@@ -50,7 +50,7 @@ class Laboratory():
 
     jim = Alchemist()
 
-    def __init__(self, potions = ["Super Attack", "Super Strength", "Super Defence", "Super Magic", "Super Ranging", "Super Necromancy", "Extreme Attack", "Extreme Strength", "Extreme Defence", "Extreme Magic", "Extreme Ranging", "Extreme Necromancy"], herbs = [], catalyst = [""] ):
+    def __init__(self, potions = ["Super Attack", "Super Strength", "Super Defence", "Super Magic", "Super Ranging", "Super Necromancy", "Extreme Attack", "Extreme Strength", "Extreme Defence", "Extreme Magic", "Extreme Ranging", "Extreme Necromancy"], herbs = [], catalyst = [] ):
         self.__potions = potions 
         self.__herbs = herbs
         self.__catalyst = catalyst
@@ -70,9 +70,12 @@ class Laboratory():
                 self.__catalyst.append(reagantName)
                 amount -= 1
 
-    #testing
+    #testing DELETE METHOD
     def getHerbs(self):
         return self.__herbs
+    
+    def getCalalyst(self):
+        return self.__catalyst
 
 
 
@@ -228,3 +231,17 @@ JimsLab = Laboratory()
 
 catalyst1 = Catalyst("Eye of Newt", 9.4)
 catalyst1.refine()
+
+
+#TODO
+#class Potion creation
+#composition between lab and alchemist
+#collectReagant - this needs to be the input that then leads addReagant inside of lab.
+#Need to pass in the recipe ingrediants from inside alchemist mixPotions into Lab mixpotions as primary and secondary
+#Calculate boost.
+#Also need to distinguish non refined to refined reagants.
+#reagants will eventually all be refined all at once.
+#drink potion() - probably use a dictionary
+#Testing
+#Error Handling
+# Doc strings
