@@ -29,15 +29,15 @@ class Alchemist():
     def getRecipes(self):
         return self.__recipes
 
-    def mixPotion(self, recipe):
-        ingredients = self.__recipes.get(recipe)
-        primary = str(ingredients[0])
+    def mixPotion(self, recipe): # recipe (potionName) looks inside of recipe dictionary and retrieves the key values (ingrediants)
+        ingredients = self.__recipes.get(recipe) # Pulls the values outside of the dictionary into a list
+        primary = str(ingredients[0]) # Breaks list into 2 string values
         secondary = str(ingredients[1])
-        nameString = recipe.split()
-        potionName = str(nameString[0])
+        nameString = recipe.split() # Splits potionName into 2 strings EXAMPLE (Exteme) (Attack)
+        potionName = str(nameString[0]) # Assigns each string to a new value
         type = str(nameString[1])
         
-        if type == "Attack":
+        if type == "Attack": # Checks type string (Attack) and assigns a stat value depending on the type name
             stat = "attack"
         elif type == "Strength":
             stat = "strength"
@@ -52,7 +52,7 @@ class Alchemist():
         else:
             print("Error")
 
-        self.__laboratory.mixPotion(potionName, type, stat, primary, secondary)
+        self.__laboratory.mixPotion(potionName, type, stat, primary, secondary) # Passes values to lab.mixPotion
         
     def drinkPotion(self, potion):
         pass
@@ -84,12 +84,12 @@ class Laboratory():
         reagantName = reagant.getName()
         print(reagantName)
 
-        if reagantName == "Irit" or reagantName == "Kwuarm" or reagantName == "Cadantine" or reagantName == "Lantadyme" or reagantName == "Dwarf Weed" or reagantName == "Arbuck" or reagantName == "Avantoe":
-            while amount > 0:
+        if reagantName == "Irit" or reagantName == "Kwuarm" or reagantName == "Cadantine" or reagantName == "Lantadyme" or reagantName == "Dwarf Weed" or reagantName == "Arbuck" or reagantName == "Avantoe": # Checks reagantName to see if it is a herb
+            while amount > 0: # Every time a reagant is added to a list the amount is deducted.
                 self.__herbs.append(reagantName)
                 amount -= 1
 
-        if reagantName == "Eye of Newt" or reagantName == "Limpwurt Root" or reagantName == "White Berries" or reagantName == "Potato Cactus" or reagantName == "Wine of Zamorak" or reagantName == "Blood of Orcus" or reagantName == "Ground Mud Rune" or reagantName == "Grenwall Spike" or reagantName == "Ground Miasma Rune":
+        if reagantName == "Eye of Newt" or reagantName == "Limpwurt Root" or reagantName == "White Berries" or reagantName == "Potato Cactus" or reagantName == "Wine of Zamorak" or reagantName == "Blood of Orcus" or reagantName == "Ground Mud Rune" or reagantName == "Grenwall Spike" or reagantName == "Ground Miasma Rune": # Checks reagantName to see if it is a catalyst
             while amount > 0:
                 self.__catalyst.append(reagantName)
                 amount -= 1
@@ -153,7 +153,11 @@ class ExtremePotion(Potion):
 
     def calculateBoost(self):
         if self.__name == "Super Attack" or self.__name == "Super Strength" or self.__name == "Super Defence" or self.__name == "Super Magic" or self.__name == "Super Ranging" or self.__name == "Super Necromancy":
-                self.__boost = 0
+            self.__boost = 0
+        elif self.__name == "Extreme Attack" or self.__name == "Extreme Strength" or self.__name == "Extreme Defence" or self.__name == "Extreme Magic" or self.__name == "Extreme Ranging" or self.__name == "Extreme Necromancy":
+            self.__boost = 0
+        else:
+            print("Error")
     
     def getReagant(self):
         return self.__reagant
@@ -191,20 +195,19 @@ class Herb(Reagent):
         self.__grimy = grimy
 
     def refine(self):
-        #Need to get name of herb and degrime the herb and multiply potency by 2.5x
         self.setGrimy(False)
-        potency = Reagent.getPotency(self)
-        potency *= 2.5
+        potency = Reagent.getPotency(self) # Retrieves potency
+        potency *= 2.5 # Calculates new potency
         Reagent.setPotency(self, potency)
         print(f"Potency is now: {potency}")
 
     def getGrimy(self):
         return self.__grimy
 
-    def setGrimy(self, grimy = bool):
+    def setGrimy(self, grimy = bool): # Passes True into a bool which returns False
         self.__grimy = grimy
 
-    grimy = property(getGrimy, setGrimy)
+    grimy = property(getGrimy, setGrimy) # Might not be required
       
 
 
@@ -214,8 +217,8 @@ class Catalyst(Reagent):
         self.__quality = quality
 
     def refine(self):
-        quality = self.getQuality()
-        if quality >= 8.9:
+        quality = self.getQuality()  
+        if quality >= 8.9: # Tests quality and sets quality to quality+1.1 and checks if its at max(10) - outputs message.
             self.__quality = 10
             quality = self.__quality
             print(quality, " it cannot be refined any further")
