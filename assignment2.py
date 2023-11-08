@@ -51,7 +51,7 @@ class Laboratory():
 
     jim = Alchemist()
 
-    def __init__(self, potions = ["Super Attack", "Super Strength", "Super Defence", "Super Magic", "Super Ranging", "Super Necromancy", "Extreme Attack", "Extreme Strength", "Extreme Defence", "Extreme Magic", "Extreme Ranging", "Extreme Necromancy"], herbs = [], catalyst = [] ):
+    def __init__(self, potions = ["Super Attack", "Super Strength", "Super Defence", "Super Magic", "Super Ranging", "Super Necromancy", "Extreme Attack", "Extreme Strength", "Extreme Defence", "Extreme Magic", "Extreme Ranging", "Extreme Necromancy"], herbs = [], catalyst = [""] ):
         self.__potions = potions 
         self.__herbs = herbs
         self.__catalyst = catalyst
@@ -61,15 +61,19 @@ class Laboratory():
 
     def addReagant(self, reagant, amount):
 
-        if reagant == "Irit" or reagant == "Kwuarm" or reagant == "Cadantine" or reagant == "Lantadyme" or reagant == "Dwarf Weed" or reagant == "Arbuck"or reagant == "Avantoe":
+        reagantName = reagant.getName()
+        if reagantName == "Irit" or reagantName == "Kwuarm" or reagantName == "Cadantine" or reagantName == "Lantadyme" or reagantName == "Dwarf Weed" or reagantName == "Arbuck" or reagantName == "Avantoe":
             while amount > 0:
-                self.__herbs.append(reagant)
+                self.__herbs.append(reagantName)
                 amount -= 1
-        if reagant == "Eye of Newt" or reagant == "Limpwurt Root" or reagant == "White Berries" or reagant == "Potato Cactus" or reagant == "Wine of Zamorak" or reagant == "Blood of Orcus" or reagant == "Ground Mud Rune" or reagant == "Grenwall Spike" or reagant == "Ground Miasma Rune":
+        if reagantName == "Eye of Newt" or reagantName == "Limpwurt Root" or reagantName == "White Berries" or reagantName == "Potato Cactus" or reagantName == "Wine of Zamorak" or reagantName == "Blood of Orcus" or reagantName == "Ground Mud Rune" or reagantName == "Grenwall Spike" or reagantName == "Ground Miasma Rune":
             while amount > 0:
-                self.__herbs.append(reagant)
+                self.__catalyst.append(reagantName)
                 amount -= 1
 
+    #testing
+    def getHerbs(self):
+        return self.__herbs
 
 
 
@@ -167,12 +171,16 @@ class Herb(Reagent):
         self.__grimy = grimy
 
     def refine(self):
+        #Need to get name of herb and degrime the herb and multiply potency by 2.5x
+        if self.__grimy == True:
+            self.__name.grimy
+
         pass
 
     def getGrimy(self):
         return self.__grimy
 
-    def setGrimy(self, grimy:bool):
+    def setGrimy(self, grimy = False):
         self.__grimy = grimy
 
     grimy = property(getGrimy, setGrimy)
@@ -180,8 +188,8 @@ class Herb(Reagent):
 
 
 class Catalyst(Reagent):
-    def __init__(self, name="name", potency=0, quality = 0.0):
-        super().__init__(name, potency)
+    def __init__(self, name="name", quality = 0.0):
+        super().__init__(name)
         self.__quality = quality
 
     def refine(self):
@@ -195,3 +203,15 @@ class Catalyst(Reagent):
 test = Alchemist()
 
 print(test.mixPotion("Super Attack"))
+
+
+
+# aggregrate interaction between laboratory and Reagant / Potion
+# Same goes for potion
+# Create Reagant than add it to a list we can then use that from laboratory
+# EXAMPLE
+JimsLab = Laboratory()
+herb1 = Herb("Irit", 2.5, True)
+JimsLab.addReagant(herb1, 2)
+print(herb1.grimy)
+print(JimsLab.getHerbs())
