@@ -33,7 +33,6 @@ class Alchemist():
         ingredients = self.__recipes.get(recipe)
         primary = str(ingredients[0])
         secondary = str(ingredients[1])
-
         return primary + secondary
 
     def drinkPotion(self, potion):
@@ -195,7 +194,15 @@ class Catalyst(Reagent):
         self.__quality = quality
 
     def refine(self):
-        pass
+        quality = self.getQuality()
+        if quality >= 8.9:
+            self.__quality = 10
+            quality = self.__quality
+            print(quality, " it cannot be refined any further")
+        else:
+            quality += 1.1 
+            self.__quality = quality 
+            print(quality)
 
     def getQuality(self):
         return self.__quality
@@ -213,8 +220,11 @@ print(test.mixPotion("Super Attack"))
 # Create Reagant than add it to a list we can then use that from laboratory
 # EXAMPLE
 JimsLab = Laboratory()
-herb1 = Herb("Irit", True)
-JimsLab.addReagant(herb1, 2)
-herb1.refine()
-print(herb1.grimy)
-print(JimsLab.getHerbs())
+#herb1 = Herb("Irit", True)
+#JimsLab.addReagant(herb1, 2)
+#herb1.refine()
+#print(herb1.grimy)
+#print(JimsLab.getHerbs())
+
+catalyst1 = Catalyst("Eye of Newt", 9.4)
+catalyst1.refine()
