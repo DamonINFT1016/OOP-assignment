@@ -144,7 +144,7 @@ class ExtremePotion(Potion):
 
 
 class Reagent(ABC):
-    def __init__(self, name = "name", potency = 0.0):
+    def __init__(self, name = "name", potency = 1.0):
         self.__name = name
         self.__potency = potency
 
@@ -158,29 +158,31 @@ class Reagent(ABC):
     def getPotency(self):
         return self.__potency
 
-    def setPotency(self, boost):
-        self.__potency = boost
+    def setPotency(self, potency):
+        self.__potency = potency
 
     potency = property(getPotency, setPotency)
         
 
 
 class Herb(Reagent):
-    def __init__(self, name="name", potency=0, grimy = True):
-        super().__init__(name, potency) 
+    def __init__(self, name="name", grimy = True):
+        super().__init__(name) 
         self.__grimy = grimy
 
     def refine(self):
         #Need to get name of herb and degrime the herb and multiply potency by 2.5x
-        if self.__grimy == True:
-            self.__name.grimy
+        self.setGrimy(False)
+        potency = Reagent.getPotency(self)
+        potency *= 2.5
+        Reagent.setPotency(self, potency)
+        print(f"Potency is now: {potency}")
 
-        pass
 
     def getGrimy(self):
         return self.__grimy
 
-    def setGrimy(self, grimy = False):
+    def setGrimy(self, grimy = bool):
         self.__grimy = grimy
 
     grimy = property(getGrimy, setGrimy)
@@ -211,7 +213,8 @@ print(test.mixPotion("Super Attack"))
 # Create Reagant than add it to a list we can then use that from laboratory
 # EXAMPLE
 JimsLab = Laboratory()
-herb1 = Herb("Irit", 2.5, True)
+herb1 = Herb("Irit", True)
 JimsLab.addReagant(herb1, 2)
+herb1.refine()
 print(herb1.grimy)
 print(JimsLab.getHerbs())
