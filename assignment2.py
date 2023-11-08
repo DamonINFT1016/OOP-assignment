@@ -33,10 +33,10 @@ class Alchemist():
         ingredients = self.__recipes.get(recipe)
         primary = str(ingredients[0])
         secondary = str(ingredients[1])
-
         nameString = recipe.split()
         potionName = str(nameString[0])
         type = str(nameString[1])
+        
         if type == "Attack":
             stat = "attack"
         elif type == "Strength":
@@ -52,11 +52,8 @@ class Alchemist():
         else:
             print("Error")
 
-
-
         self.__laboratory.mixPotion(potionName, type, stat, primary, secondary)
         
-
     def drinkPotion(self, potion):
         pass
 
@@ -77,23 +74,21 @@ class Laboratory():
         self.__catalyst = catalyst
 
     def mixPotion(self, name, type, stat, primaryIngredient, secondaryIngredient):
-
         print(name)
         print(type)
         print(stat)
         print(primaryIngredient)
         print(secondaryIngredient)
 
-
-
     def addReagant(self, reagant, amount):
-
         reagantName = reagant.getName()
         print(reagantName)
+
         if reagantName == "Irit" or reagantName == "Kwuarm" or reagantName == "Cadantine" or reagantName == "Lantadyme" or reagantName == "Dwarf Weed" or reagantName == "Arbuck" or reagantName == "Avantoe":
             while amount > 0:
                 self.__herbs.append(reagantName)
                 amount -= 1
+
         if reagantName == "Eye of Newt" or reagantName == "Limpwurt Root" or reagantName == "White Berries" or reagantName == "Potato Cactus" or reagantName == "Wine of Zamorak" or reagantName == "Blood of Orcus" or reagantName == "Ground Mud Rune" or reagantName == "Grenwall Spike" or reagantName == "Ground Miasma Rune":
             while amount > 0:
                 self.__catalyst.append(reagantName)
@@ -237,24 +232,10 @@ class Catalyst(Reagent):
 test = Alchemist()
 testLab = Laboratory()
 
+test.collectReagent("Irit", 2)
 test.mixPotion("Super Attack")
 
 
-
-# aggregrate interaction between laboratory and Reagant / Potion
-# Same goes for potion
-# Create Reagant than add it to a list we can then use that from laboratory
-# EXAMPLE
-#JimsLab = Laboratory()
-#herb1 = Herb("Irit", True)
-#JimsLab.addReagant(herb1, 2)
-#herb1.refine()
-#print(herb1.grimy)
-#print(JimsLab.getHerbs())
-
-#catalyst1 = Catalyst("Eye of Newt", 9.4)
-#catalyst1.refine()
-#JimsLab.addReagant(catalyst1, 2)
 #"Super Attack", "Super Strength", "Super Defence", "Super Magic", "Super Ranging", "Super Necromancy", "Extreme Attack", "Extreme Strength", "Extreme Defence", "Extreme Magic", "Extreme Ranging", "Extreme Necromancy"
 
 #TODO
