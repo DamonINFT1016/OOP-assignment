@@ -51,11 +51,19 @@ class Alchemist():
             stat = "necromancy"
         else:
             print("Error")
-
-        self.__laboratory.mixPotion(potionName, type, stat, primary, secondary) # Passes values to lab.mixPotion
+        #self.__laboratory.mixPotion(potionName, type, stat, primary, secondary) # Passes values to lab.mixPotion
         
     def drinkPotion(self, potion):
-        pass
+        drunk = False    
+        for potions in self.__laboratory._Laboratory__potions: #Checks potions list for the potion name that was passed in.
+            if potions == potion:
+                self.__laboratory._Laboratory__potions.remove(potions) #Removes potion from the list
+                print("Success")
+                print(self.__laboratory._Laboratory__potions)
+                drunk = True
+        if drunk == False:
+            print("Potion was not found")
+            
 
     def collectReagent(self, reagent, amount):
         pass
@@ -68,7 +76,7 @@ class Alchemist():
 class Laboratory():
 
 
-    def __init__(self, potions = [], herbs = [], catalyst = [] ):
+    def __init__(self, potions = ["Super Potion"], herbs = [], catalyst = [] ):
         self.__potions = potions 
         self.__herbs = herbs
         self.__catalyst = catalyst
@@ -79,6 +87,15 @@ class Laboratory():
         print(stat)
         print(primaryIngredient)
         print(secondaryIngredient)
+
+        if self.__name == "Super Attack" or self.__name == "Super Strength" or self.__name == "Super Defence" or self.__name == "Super Magic" or self.__name == "Super Ranging" or self.__name == "Super Necromancy":
+            potion = SuperPotion(primaryIngredient, secondaryIngredient, name, stat)
+            self.__potions.append(potion)
+        elif self.__name == "Extreme Attack" or self.__name == "Extreme Strength" or self.__name == "Extreme Defence" or self.__name == "Extreme Magic" or self.__name == "Extreme Ranging" or self.__name == "Extreme Necromancy":
+            self.__boost = 0
+        else:
+            print("Error")
+        print(self.__potions)
 
     def addReagant(self, reagant, amount):
         reagantName = reagant.getName()
@@ -130,12 +147,7 @@ class SuperPotion(Potion):
         self.__catalyst = catalyst
 
     def calculateBoost(self):
-        if self.__name == "Super Attack" or self.__name == "Super Strength" or self.__name == "Super Defence" or self.__name == "Super Magic" or self.__name == "Super Ranging" or self.__name == "Super Necromancy":
-            self.__boost = 0
-        elif self.__name == "Extreme Attack" or self.__name == "Extreme Strength" or self.__name == "Extreme Defence" or self.__name == "Extreme Magic" or self.__name == "Extreme Ranging" or self.__name == "Extreme Necromancy":
-            self.__boost = 0
-        else:
-            print("Error")
+        pass
     
     def getHerb(self):
         return self.__herb
@@ -235,7 +247,9 @@ class Catalyst(Reagent):
 test = Alchemist()
 testLab = Laboratory()
 
-test.collectReagent("Irit", 2)
+test.drinkPotion("Super Potion")
+
+#test.collectReagent("Irit", 2)
 test.mixPotion("Super Attack")
 
 
@@ -253,5 +267,5 @@ test.mixPotion("Super Attack")
 #Testing
 #Error Handling
 # Doc strings
-# if 0 <= stength <=:
+# if 0 <= stength <=100:
 
