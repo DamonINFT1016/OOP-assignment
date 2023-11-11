@@ -59,35 +59,36 @@ class Alchemist():
             if potions == potion:
                 self.__laboratory._Laboratory__potions.remove(potions) #Removes potion from the list
                 print("Success")
-                print(self.__laboratory._Laboratory__potions)
                 drunk = True
                 break
         if drunk == False:
             print("Potion was not found")
             
 
-    def collectReagent(self, reagent, amount):
-        pass
+    def collectReagent(self, reagant, amount):
+        if reagant == "Irit" or reagant == "Kwuarm" or reagant == "Cadantine" or reagant == "Lantadyme" or reagant == "Dwarf Weed" or reagant == "Arbuck" or reagant == "Avantoe":
+            reagentInstance = Herb(reagant)
+        if reagant == "Eye of Newt" or reagant == "Limpwurt Root" or reagant == "White Berries" or reagant == "Potato Cactus" or reagant == "Wine of Zamorak" or reagant == "Blood of Orcus" or reagant == "Ground Mud Rune" or reagant == "Grenwall Spike" or reagant == "Ground Miasma Rune":
+            reagentInstance = Catalyst(reagant)
+        
+        self.__laboratory.addReagant(reagentInstance, amount)
 
     def refineReagent(self):
-        Laboratory.addReagant()
+        Reagent.refineReagant()
 
 
 
 class Laboratory():
 
 
-    def __init__(self, potions = ["Super Potion"], herbs = [], catalyst = [] ):
+    def __init__(self, potions = [], herbs = [], catalyst = [] ):
         self.__potions = potions 
         self.__herbs = herbs
         self.__catalyst = catalyst
 
     def mixPotion(self, name, type, stat, primaryIngredient, secondaryIngredient):
-        print(name)
-        print(type)
-        print(stat)
-        print(primaryIngredient)
-        print(secondaryIngredient)
+        print(self.__herbs)
+        print(self.__catalyst)
 
         potionName = type + " " + name
 
@@ -99,12 +100,12 @@ class Laboratory():
             secondaryValid = False
 
             for herbs in self.__herbs:
-                    if herbs == primaryIngredient:
-                        primaryValid = True
-                        break
+                if herbs.getName() == primaryIngredient:
+                    primaryValid = True
+                    break
 
             for catalysts in self.__catalyst:
-                if catalysts == secondaryIngredient:
+                if catalysts.getName() == secondaryIngredient:
                     secondaryValid = True
                     break
 
@@ -119,13 +120,18 @@ class Laboratory():
             if ingredientsValid == True:
                 potion = SuperPotion(primaryIngredient, secondaryIngredient, name, stat)
                 self.__potions.append(potion)
-                for herbs in self.__herbs:
-                    if herbs == primaryIngredient:
-                        self.__herbs.remove(primaryIngredient)
 
-                for catalysts in self.__catalyst:
-                    if catalysts == secondaryIngredient:
-                        self.__catalyst.remove(secondaryIngredient)
+                for ingrediant in self.__herbs:
+                    if ingrediant.getName == primaryIngredient:
+                        self.__herbs.remove(ingrediant)
+
+                for ingrediant in self.__herbs:
+                    if ingrediant.getName == secondaryIngredient:
+                        self.__herbs.remove(ingrediant)
+
+                print(self.__herbs)
+                print(self.__potions)
+                print(self.__catalyst)
 
             elif ingredientsValid == False:
                 print(f"You do not have the correct ingrediants to make {potionName}")
@@ -136,29 +142,30 @@ class Laboratory():
 
 
         elif potionName == "Extreme Attack" or potionName == "Extreme Strength" or potionName == "Extreme Defence" or potionName == "Extreme Magic" or potionName == "Extreme Ranging" or potionName == "Extreme Necromancy":
-            potion = ExtremePotion(primaryIngredient, secondaryIngredient, name, stat)
+            
 
             ingredientsValid = False
             primaryValid = False
             secondaryValid = False
+            
 
             for herbs in self.__herbs:
-                if herbs == primaryIngredient:
+                if herbs.getName() == primaryIngredient:
                     primaryValid = True
                     break
 
             for catalysts in self.__catalyst:
-                if catalysts == primaryIngredient:
+                if catalysts.getName() == primaryIngredient:
                     primaryValid = True
                     break
 
             for catalysts in self.__catalyst:
-                if catalysts == secondaryIngredient:
+                if catalysts.getName() == secondaryIngredient:
                     secondaryValid = True 
                     break
 
             for potions in self.__potions:
-                if potions == secondaryIngredient:
+                if ("Super " + potions.getName()) == secondaryIngredient:
                     secondaryValid = True
                     break 
 
@@ -167,22 +174,26 @@ class Laboratory():
 
 
 
-            if ingredientsValid == True: #Checks to see if the ingredients to make the potion is valid
+            if ingredientsValid == True: 
+                potion = ExtremePotion(primaryIngredient, secondaryIngredient, name, stat)
                 for herbs in self.__herbs:
-                    if herbs == primaryIngredient: # Finds and removes the ingrediant
-                        self.__herbs.remove(primaryIngredient)
+                    if herbs.getName() == primaryIngredient: # Finds and removes the ingrediant
+                        self.__herbs.remove(herbs)
+                        break
 
                 for catalysts in self.__catalyst:
-                    if catalysts == primaryIngredient:
-                        self.__catalyst.remove(primaryIngredient)
+                    if catalysts.getName() == primaryIngredient:
+                        self.__catalyst.remove(catalysts)
 
                 for catalysts in self.__catalyst:
-                    if catalysts == secondaryIngredient:
-                        self.__catalyst.remove(secondaryIngredient)
+                    if catalysts.getName() == secondaryIngredient:
+                        self.__catalyst.remove(catalysts)
 
                 for potions in self.__potions:
-                    if potions == secondaryIngredient:
-                        self.__potions.remove(secondaryIngredient)
+                    if str("Super " + potions.getName()) == secondaryIngredient:
+                        self.__potions.remove(potions)
+
+
             if ingredientsValid == False:
                 print(f"You do not have the correct ingrediants to make {potionName}")
 
@@ -190,18 +201,20 @@ class Laboratory():
         else:
             print("Error")
 
+       
+
     def addReagant(self, reagant, amount):
         reagantName = reagant.getName()
         print(reagantName)
 
         if reagantName == "Irit" or reagantName == "Kwuarm" or reagantName == "Cadantine" or reagantName == "Lantadyme" or reagantName == "Dwarf Weed" or reagantName == "Arbuck" or reagantName == "Avantoe": # Checks reagantName to see if it is a herb
             while amount > 0: # Every time a reagant is added to a list the amount is deducted.
-                self.__herbs.append(reagantName)
+                self.__herbs.append(reagant)
                 amount -= 1
 
         if reagantName == "Eye of Newt" or reagantName == "Limpwurt Root" or reagantName == "White Berries" or reagantName == "Potato Cactus" or reagantName == "Wine of Zamorak" or reagantName == "Blood of Orcus" or reagantName == "Ground Mud Rune" or reagantName == "Grenwall Spike" or reagantName == "Ground Miasma Rune": # Checks reagantName to see if it is a catalyst
             while amount > 0:
-                self.__catalyst.append(reagantName)
+                self.__catalyst.append(reagant)
                 amount -= 1
 
 
@@ -339,11 +352,18 @@ class Catalyst(Reagent):
 
 test = Alchemist()
 testLab = Laboratory()
+test.collectReagent("Irit", 2)
+test.collectReagent("Avantoe", 1)
+test.collectReagent("Eye of Newt", 1)
 
-test.drinkPotion("Super Potion")
+
+
+
 
 #test.collectReagent("Irit", 2)
 test.mixPotion("Super Attack")
+#test.mixPotion("Extreme Attack")
+test.drinkPotion("Super Attack")
 
 
 #"Super Attack", "Super Strength", "Super Defence", "Super Magic", "Super Ranging", "Super Necromancy", "Extreme Attack", "Extreme Strength", "Extreme Defence", "Extreme Magic", "Extreme Ranging", "Extreme Necromancy"
@@ -362,3 +382,24 @@ test.mixPotion("Super Attack")
 # Doc strings
 # if 0 <= stength <=100:
 
+
+#Herbs with their potency value:
+#Arbuck 2.6
+#Avantoe 3.0
+#Cadantine 1.5
+#Dwarf Weed 2.5
+#Irit 1.0
+#Kwuarm 1.2
+#Lantadyme 2.0
+#Torstol 4.5
+
+#Catalysts with their potency and quality value:
+#Eye of Newt 4.3, 1.0
+#Limpwurt Root 3.6, 1.7
+#White Berries 1.2, 2.0
+#Potato Cactus 7.3, 0.1
+#Wine of Zamorak 1.7, 5.0
+#Blood of Orcus 4.5, 2.2
+#Ground Mud Rune 2.1, 6.7
+#Grenwall Spike 6.3, 4.9
+#Ground Miasma Rune 3.3, 5.2
