@@ -51,7 +51,7 @@ class Alchemist():
             stat = "necromancy"
         else:
             print("Error")
-        #self.__laboratory.mixPotion(potionName, type, stat, primary, secondary) # Passes values to lab.mixPotion
+        self.__laboratory.mixPotion(type, potionName, stat, primary, secondary) # Passes values to lab.mixPotion
         
     def drinkPotion(self, potion):
         drunk = False    
@@ -110,6 +110,10 @@ class Laboratory():
 
             if primaryValid == True and secondaryValid == True:
                 ingredientsValid = True
+            if primaryValid == False:
+                    print(f"{primaryIngredient} Missing!")
+            if secondaryValid == False:
+                print(f"{secondaryIngredient} Missing!")
 
 
             if ingredientsValid == True:
@@ -125,6 +129,10 @@ class Laboratory():
 
             elif ingredientsValid == False:
                 print(f"You do not have the correct ingrediants to make {potionName}")
+                if primaryValid == False:
+                    print(f"{primaryIngredient} Missing!")
+                elif secondaryValid == False:
+                    print(f"{secondaryIngredient} Missing!")
 
 
         elif potionName == "Extreme Attack" or potionName == "Extreme Strength" or potionName == "Extreme Defence" or potionName == "Extreme Magic" or potionName == "Extreme Ranging" or potionName == "Extreme Necromancy":
@@ -175,7 +183,7 @@ class Laboratory():
                 for potions in self.__potions:
                     if potions == secondaryIngredient:
                         self.__potions.remove(secondaryIngredient)
-            elif ingredientsValid == False:
+            if ingredientsValid == False:
                 print(f"You do not have the correct ingrediants to make {potionName}")
 
 
