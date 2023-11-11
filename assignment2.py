@@ -61,6 +61,7 @@ class Alchemist():
                 print("Success")
                 print(self.__laboratory._Laboratory__potions)
                 drunk = True
+                break
         if drunk == False:
             print("Potion was not found")
             
@@ -88,14 +89,98 @@ class Laboratory():
         print(primaryIngredient)
         print(secondaryIngredient)
 
-        if self.__name == "Super Attack" or self.__name == "Super Strength" or self.__name == "Super Defence" or self.__name == "Super Magic" or self.__name == "Super Ranging" or self.__name == "Super Necromancy":
-            potion = SuperPotion(primaryIngredient, secondaryIngredient, name, stat)
-            self.__potions.append(potion)
-        elif self.__name == "Extreme Attack" or self.__name == "Extreme Strength" or self.__name == "Extreme Defence" or self.__name == "Extreme Magic" or self.__name == "Extreme Ranging" or self.__name == "Extreme Necromancy":
-            self.__boost = 0
+        potionName = type + " " + name
+
+        if potionName == "Super Attack" or potionName == "Super Strength" or potionName == "Super Defence" or potionName == "Super Magic" or potionName == "Super Ranging" or potionName == "Super Necromancy":
+
+            # NEEDS TO CHECK IF INGREDIANT IS IN LIST
+            ingredientsValid = False
+            primaryValid = False
+            secondaryValid = False
+
+            for herbs in self.__herbs:
+                    if herbs == primaryIngredient:
+                        primaryValid = True
+                        break
+
+            for catalysts in self.__catalyst:
+                if catalysts == secondaryIngredient:
+                    secondaryValid = True
+                    break
+
+            if primaryValid == True and secondaryValid == True:
+                ingredientsValid = True
+
+
+            if ingredientsValid == True:
+                potion = SuperPotion(primaryIngredient, secondaryIngredient, name, stat)
+                self.__potions.append(potion)
+                for herbs in self.__herbs:
+                    if herbs == primaryIngredient:
+                        self.__herbs.remove(primaryIngredient)
+
+                for catalysts in self.__catalyst:
+                    if catalysts == secondaryIngredient:
+                        self.__catalyst.remove(secondaryIngredient)
+
+            elif ingredientsValid == False:
+                print(f"You do not have the correct ingrediants to make {potionName}")
+
+
+        elif potionName == "Extreme Attack" or potionName == "Extreme Strength" or potionName == "Extreme Defence" or potionName == "Extreme Magic" or potionName == "Extreme Ranging" or potionName == "Extreme Necromancy":
+            potion = ExtremePotion(primaryIngredient, secondaryIngredient, name, stat)
+
+            ingredientsValid = False
+            primaryValid = False
+            secondaryValid = False
+
+            for herbs in self.__herbs:
+                if herbs == primaryIngredient:
+                    primaryValid = True
+                    break
+
+            for catalysts in self.__catalyst:
+                if catalysts == primaryIngredient:
+                    primaryValid = True
+                    break
+
+            for catalysts in self.__catalyst:
+                if catalysts == secondaryIngredient:
+                    secondaryValid = True 
+                    break
+
+            for potions in self.__potions:
+                if potions == secondaryIngredient:
+                    secondaryValid = True
+                    break 
+
+            if primaryValid == True and secondaryValid == True:
+                ingredientsValid = True
+
+
+
+            if ingredientsValid == True: #Checks to see if the ingredients to make the potion is valid
+                for herbs in self.__herbs:
+                    if herbs == primaryIngredient: # Finds and removes the ingrediant
+                        self.__herbs.remove(primaryIngredient)
+
+                for catalysts in self.__catalyst:
+                    if catalysts == primaryIngredient:
+                        self.__catalyst.remove(primaryIngredient)
+
+                for catalysts in self.__catalyst:
+                    if catalysts == secondaryIngredient:
+                        self.__catalyst.remove(secondaryIngredient)
+
+                for potions in self.__potions:
+                    if potions == secondaryIngredient:
+                        self.__potions.remove(secondaryIngredient)
+            elif ingredientsValid == False:
+                print(f"You do not have the correct ingrediants to make {potionName}")
+
+
         else:
             print("Error")
-        print(self.__potions)
 
     def addReagant(self, reagant, amount):
         reagantName = reagant.getName()
