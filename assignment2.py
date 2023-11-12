@@ -66,15 +66,13 @@ class Alchemist():
             
 
     def collectReagent(self, reagant, amount):
-        if reagant == "Irit" or reagant == "Kwuarm" or reagant == "Cadantine" or reagant == "Lantadyme" or reagant == "Dwarf Weed" or reagant == "Arbuck" or reagant == "Avantoe":
-            reagentInstance = Herb(reagant)
-        if reagant == "Eye of Newt" or reagant == "Limpwurt Root" or reagant == "White Berries" or reagant == "Potato Cactus" or reagant == "Wine of Zamorak" or reagant == "Blood of Orcus" or reagant == "Ground Mud Rune" or reagant == "Grenwall Spike" or reagant == "Ground Miasma Rune":
-            reagentInstance = Catalyst(reagant)
-        
-        self.__laboratory.addReagant(reagentInstance, amount)
+        self.__laboratory.addReagant(reagant, amount)
 
     def refineReagent(self):
-        Reagent.refineReagant()
+        for reagent in self.__laboratory._Laboratory__herbs:
+            Herb.refine(reagent)
+        for reagent in self.__laboratory._Laboratory__catalyst:
+            Catalyst.refine(reagent)
 
 
 
@@ -100,7 +98,7 @@ class Laboratory():
             secondaryValid = False
 
             for herbs in self.__herbs:
-                if herbs.getName() == primaryIngredient:
+                if herbs.getName() == primaryIngredient: # herbs are stored as memory values and the getter is used to get their name to compare. 
                     primaryValid = True
                     break
 
@@ -205,18 +203,19 @@ class Laboratory():
        
 
     def addReagant(self, reagant, amount):
-        reagantName = reagant.getName()
-        print(reagantName)
+        
 
-        if reagantName == "Irit" or reagantName == "Kwuarm" or reagantName == "Cadantine" or reagantName == "Lantadyme" or reagantName == "Dwarf Weed" or reagantName == "Arbuck" or reagantName == "Avantoe": # Checks reagantName to see if it is a herb
-            while amount > 0: # Every time a reagant is added to a list the amount is deducted.
-                self.__herbs.append(reagant)
-                amount -= 1
-
-        if reagantName == "Eye of Newt" or reagantName == "Limpwurt Root" or reagantName == "White Berries" or reagantName == "Potato Cactus" or reagantName == "Wine of Zamorak" or reagantName == "Blood of Orcus" or reagantName == "Ground Mud Rune" or reagantName == "Grenwall Spike" or reagantName == "Ground Miasma Rune": # Checks reagantName to see if it is a catalyst
+        if reagant == "Irit" or reagant == "Kwuarm" or reagant == "Cadantine" or reagant == "Lantadyme" or reagant == "Dwarf Weed" or reagant == "Arbuck" or reagant == "Avantoe":
+            reagentInstance = Herb(reagant)
             while amount > 0:
-                self.__catalyst.append(reagant)
+                self.__herbs.append(reagentInstance)
                 amount -= 1
+        if reagant == "Eye of Newt" or reagant == "Limpwurt Root" or reagant == "White Berries" or reagant == "Potato Cactus" or reagant == "Wine of Zamorak" or reagant == "Blood of Orcus" or reagant == "Ground Mud Rune" or reagant == "Grenwall Spike" or reagant == "Ground Miasma Rune":
+            reagentInstance = Catalyst(reagant)
+            while amount > 0:
+                self.__catalyst.append(reagentInstance)
+                amount -= 1
+
 
 
 
@@ -248,7 +247,7 @@ class Potion(ABC):
 
 
 class SuperPotion(Potion):
-    def __init__(self, herb, catalyst, name="name", stat=0, boost=0): #possible problem with order of the items care
+    def __init__(self, herb, catalyst, name="name", stat=0, boost=0): 
         super().__init__(name, stat, boost)
         self.__herb = herb
         self.__catalyst = catalyst
@@ -265,7 +264,7 @@ class SuperPotion(Potion):
 
 
 class ExtremePotion(Potion):
-    def __init__(self, reagant, potion, name="name", stat=0, boost=0 ):#possible problem with order of the items care
+    def __init__(self, reagant, potion, name="name", stat=0, boost=0 ):
         super().__init__(name, stat, boost)
         self.__reagant = reagant
         self.__potion = potion
@@ -318,7 +317,7 @@ class Herb(Reagent):
 
     def refine(self):
         self.setGrimy(False)
-        potencyValue = Herb.herbDictionary.get(self.__name) # Retrieves potency
+        potencyValue = Herb.herbDictionary.get(self) # Retrieves potency
         potency = int(potencyValue)
         potency *= 2.5 # Calculates new potency
         Reagent.setPotency(self, potency)
@@ -367,15 +366,12 @@ test.collectReagent("Irit", 2)
 test.collectReagent("Avantoe", 1)
 test.collectReagent("Eye of Newt", 1)
 
-
-
-
-
 #test.collectReagent("Irit", 2)
 test.mixPotion("Super Attack")
 test.mixPotion("Extreme Attack")
 test.drinkPotion("Extreme Attack")
 #test.drinkPotion("Super Attack")
+test.refineReagent()
 
 
 #"Super Attack", "Super Strength", "Super Defence", "Super Magic", "Super Ranging", "Super Necromancy", "Extreme Attack", "Extreme Strength", "Extreme Defence", "Extreme Magic", "Extreme Ranging", "Extreme Necromancy"
@@ -394,24 +390,3 @@ test.drinkPotion("Extreme Attack")
 # Doc strings
 # if 0 <= stength <=100:
 
-
-#Herbs with their potency value:
-#Arbuck 2.6
-#Avantoe 3.0
-#Cadantine 1.5
-#Dwarf Weed 2.5
-#Irit 1.0
-#Kwuarm 1.2
-#Lantadyme 2.0
-#Torstol 4.5
-
-#Catalysts with their potency and quality value:
-#Eye of Newt 4.3, 1.0
-#Limpwurt Root 3.6, 1.7
-#White Berries 1.2, 2.0
-#Potato Cactus 7.3, 0.1
-#Wine of Zamorak 1.7, 5.0
-#Blood of Orcus 4.5, 2.2
-#Ground Mud Rune 2.1, 6.7
-#Grenwall Spike 6.3, 4.9
-#Ground Miasma Rune 3.3, 5.2
