@@ -309,13 +309,17 @@ class Reagent(ABC):
 
 
 class Herb(Reagent):
+
+    herbDictionary = {"Arbuck": [2.6], "Avantoe": [3.0], "Cadantine": [1.5], "Dwarf Weed": [2.5], "Irit": [1.0], "Kwuarm": [1.2], "Lantadyme": [2.0], "Torstol": [4.5]}
+
     def __init__(self, name="name", grimy = True):
         super().__init__(name) 
         self.__grimy = grimy
 
     def refine(self):
         self.setGrimy(False)
-        potency = Reagent.getPotency(self) # Retrieves potency
+        potencyValue = Herb.herbDictionary.get(self.__name) # Retrieves potency
+        potency = int(potencyValue)
         potency *= 2.5 # Calculates new potency
         Reagent.setPotency(self, potency)
         print(f"Potency is now: {potency}")
@@ -331,12 +335,18 @@ class Herb(Reagent):
 
 
 class Catalyst(Reagent):
+
+    catalystDictionary = {"Eye of Newt" : [4.3, 1.0], "Limpwurt Root" : [3.6, 1.7], "White Berries" : [1.2, 2.0], "Potato Cactus" : [7.3, 0.1], "Wine of Zamorak" : [1.7, 5.0], "Blood of Orcus" : [4.5, 2.2], "Ground Mud Rune" : [2.1, 6.7], "Grenwall Spike" : [6.3, 4.9], "Ground Miasma Rune" : [3.3, 5.2] }
+
     def __init__(self, name="name", quality = 0.0):
         super().__init__(name)
         self.__quality = quality
 
     def refine(self):
-        quality = self.getQuality()  
+        values = Catalyst.catalystDictionary.get(self.__name)
+        quality = int(values[1])
+        potency = int(values[0])
+        Reagent.setPotency(self, potency)
         if quality >= 8.9: # Tests quality and sets quality to quality+1.1 and checks if its at max(10) - outputs message.
             self.__quality = 10
             quality = self.__quality
