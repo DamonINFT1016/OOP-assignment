@@ -55,10 +55,10 @@ class Alchemist():
         
     def drinkPotion(self, potion):
         drunk = False    
-        for potions in self.__laboratory._Laboratory__potions: #Checks potions list for the potion name that was passed in.
-            if potions == potion:
+        for potions in self.__laboratory._Laboratory__potions: #Checks potions list for the potion name that was passed in. This method was used because there is no getter method in the uml diagram.
+            if potions.getName() == potion:
                 self.__laboratory._Laboratory__potions.remove(potions) #Removes potion from the list
-                print("Success")
+                print(f"{potions.getName()} was drunk!")
                 drunk = True
                 break
         if drunk == False:
@@ -118,7 +118,7 @@ class Laboratory():
 
 
             if ingredientsValid == True:
-                potion = SuperPotion(primaryIngredient, secondaryIngredient, name, stat)
+                potion = SuperPotion(primaryIngredient, secondaryIngredient, potionName, stat)
                 self.__potions.append(potion)
 
                 for ingrediant in self.__herbs:
@@ -165,7 +165,7 @@ class Laboratory():
                     break
 
             for potions in self.__potions:
-                if ("Super " + potions.getName()) == secondaryIngredient:
+                if (potions.getName()) == secondaryIngredient:
                     secondaryValid = True
                     break 
 
@@ -175,7 +175,8 @@ class Laboratory():
 
 
             if ingredientsValid == True: 
-                potion = ExtremePotion(primaryIngredient, secondaryIngredient, name, stat)
+                potion = ExtremePotion(primaryIngredient, secondaryIngredient, potionName, stat)
+                self.__potions.append(potion)
                 for herbs in self.__herbs:
                     if herbs.getName() == primaryIngredient: # Finds and removes the ingrediant
                         self.__herbs.remove(herbs)
@@ -190,7 +191,7 @@ class Laboratory():
                         self.__catalyst.remove(catalysts)
 
                 for potions in self.__potions:
-                    if str("Super " + potions.getName()) == secondaryIngredient:
+                    if potions.getName() == secondaryIngredient:
                         self.__potions.remove(potions)
 
 
@@ -362,8 +363,9 @@ test.collectReagent("Eye of Newt", 1)
 
 #test.collectReagent("Irit", 2)
 test.mixPotion("Super Attack")
-#test.mixPotion("Extreme Attack")
-test.drinkPotion("Super Attack")
+test.mixPotion("Extreme Attack")
+test.drinkPotion("Extreme Attack")
+#test.drinkPotion("Super Attack")
 
 
 #"Super Attack", "Super Strength", "Super Defence", "Super Magic", "Super Ranging", "Super Necromancy", "Extreme Attack", "Extreme Strength", "Extreme Defence", "Extreme Magic", "Extreme Ranging", "Extreme Necromancy"
