@@ -60,9 +60,77 @@ class Alchemist():
                 self.__laboratory._Laboratory__potions.remove(potions) #Removes potion from the list
                 print(f"{potions.getName()} was drunk!")
                 drunk = True
+                type = potions.getName().split()
+
+                if type[1] == "Attack": # Checks type string (Attack) and assigns a stat value depending on the type name
+                    self.__attack = potions.getBoost()
+                    Value = potions.getBoost()
+                    print(Value)
+                    if self.__attack >= 101:
+                        self.__attack = 100
+                    elif self.__attack <= 0:
+                        self.__attack = 0
+
+
+                elif type[1] == "Strength":
+                    self.__strength = potions.getBoost()
+                    Value = potions.getBoost()
+                    print(Value)
+                    if self.__attack >= 101:
+                        self.__attack = 100
+                    elif self.__attack <= 0:
+                        self.__attack = 0
+
+
+                elif type[1] == "Defence":
+                    self.__defence = potions.getBoost()
+                    Value = potions.getBoost()
+                    print(Value)
+                    if self.__attack >= 101:
+                        self.__attack = 100
+                    elif self.__attack <= 0:
+                        self.__attack = 0
+
+
+                elif type[1] == "Magic":
+                    self.__magic = potions.getBoost()
+                    Value = potions.getBoost()
+                    print(Value)
+                    if self.__attack >= 101:
+                        self.__attack = 100
+                    elif self.__attack <= 0:
+                        self.__attack = 0
+
+
+                elif type[1] == "Ranging":
+                    self.__ranged = potions.getBoost()
+                    Value = potions.getBoost()
+                    print(Value)
+                    if self.__attack >= 101:
+                        self.__attack = 100
+                    elif self.__attack <= 0:
+                        self.__attack = 0
+
+
+                elif type[1] == "Necromancy":
+                    self.__necromancy = potions.getBoost()
+                    Value = potions.getBoost()
+                    print(Value)
+                    if self.__attack >= 101:
+                        self.__attack = 100
+                    elif self.__attack <= 0:
+                        self.__attack = 0
+
+
+                else:
+                    print("Error")
+
+
                 break
         if drunk == False:
             print("Potion was not found")
+
+
             
 
     def collectReagent(self, reagant, amount):
@@ -115,6 +183,7 @@ class Laboratory():
 
             if ingredientsValid == True:
                 potion = SuperPotion(primaryIngredient, secondaryIngredient, potionName, stat)
+                potion.calculateBoost()
                 self.__potions.append(potion)
 
                 for ingrediant in self.__herbs:
@@ -139,12 +208,11 @@ class Laboratory():
 
         elif potionName == "Extreme Attack" or potionName == "Extreme Strength" or potionName == "Extreme Defence" or potionName == "Extreme Magic" or potionName == "Extreme Ranging" or potionName == "Extreme Necromancy":
             
-
+            # NEEDS TO CHECK IF INGREDIANT IS IN LIST
             ingredientsValid = False
             primaryValid = False
             secondaryValid = False
             
-
             for herbs in self.__herbs:
                 if herbs.getName() == primaryIngredient:
                     primaryValid = True
@@ -161,7 +229,7 @@ class Laboratory():
                     break
 
             for potions in self.__potions:
-                if (potions.getName()) == secondaryIngredient:
+                if potions.getName() == secondaryIngredient:
                     secondaryValid = True
                     break 
 
@@ -171,6 +239,7 @@ class Laboratory():
 
             if ingredientsValid == True: 
                 potion = ExtremePotion(primaryIngredient, secondaryIngredient, potionName, stat)
+                potion.calculateBoost()
                 self.__potions.append(potion)
                 for herbs in self.__herbs:
                     if herbs.getName() == primaryIngredient: # Finds and removes the ingrediant
@@ -214,7 +283,7 @@ class Laboratory():
 
 
 class Potion(ABC):
-    def __init__(self, name = "name", stat = 0, boost = 0.0):
+    def __init__(self, name = "name", stat = 0, boost = 1.0):
         self.__name = name
         self.__stat = stat
         self.__boost = boost
@@ -240,13 +309,18 @@ class Potion(ABC):
 
 
 class SuperPotion(Potion):
-    def __init__(self, herb, catalyst, name="name", stat=0, boost=0): 
+    def __init__(self, herb, catalyst, name="name", stat=0, boost=1.0): 
         super().__init__(name, stat, boost)
         self.__herb = herb
         self.__catalyst = catalyst
 
     def calculateBoost(self):
-        pass
+        herbPotency = self.__herb.getPotency()
+        catalystPotency = self.__catalyst.getPotency()
+
+        self.__boost = (herbPotency + catalystPotency) + 1.5
+        round(self.getBoost, 2)
+        print(self.boost)
     
     def getHerb(self):
         return self.__herb
@@ -257,18 +331,17 @@ class SuperPotion(Potion):
 
 
 class ExtremePotion(Potion):
-    def __init__(self, reagant, potion, name="name", stat=0, boost=0 ):
+    def __init__(self, reagant, potion, name="name", stat=0, boost=1.0 ):
         super().__init__(name, stat, boost)
         self.__reagant = reagant
         self.__potion = potion
 
     def calculateBoost(self):
-        if self.__name == "Super Attack" or self.__name == "Super Strength" or self.__name == "Super Defence" or self.__name == "Super Magic" or self.__name == "Super Ranging" or self.__name == "Super Necromancy":
-            self.__boost = 0
-        elif self.__name == "Extreme Attack" or self.__name == "Extreme Strength" or self.__name == "Extreme Defence" or self.__name == "Extreme Magic" or self.__name == "Extreme Ranging" or self.__name == "Extreme Necromancy":
-            self.__boost = 0
-        else:
-            print("Error")
+        reagantPotency = self.__reagant.getPotency()
+        catalystPotency = self.__potion.getBoost()
+
+        self.__boost = reagantPotency * catalystPotency * 1.5
+        round(self.getBoost, 2)
     
     def getReagant(self):
         return self.__reagant
@@ -312,7 +385,7 @@ class Herb(Reagent):
         potencyValue = Herb.herbDictionary.get(self.getName()) # Retrieves potency
         potency = float(potencyValue[0])
         potency *= 2.5 # Calculates new potency
-        Reagent.setPotency(self, potency)
+        self.setPotency = potency
         print(f"{self.getName()}'s potency is now at: {potency}")
 
     def getGrimy(self):
@@ -321,7 +394,6 @@ class Herb(Reagent):
     def setGrimy(self, grimy = bool): # Passes True into a bool which returns False
         self.__grimy = grimy
 
-    grimy = property(getGrimy, setGrimy) # Might not be required
       
 
 
@@ -336,7 +408,6 @@ class Catalyst(Reagent):
         values = Catalyst.catalystDictionary.get(self.getName())
         quality = float(values[1])
         potency = float(values[0])
-        Reagent.setPotency(self, potency)
         if quality >= 8.9: # Tests quality and sets quality to quality+1.1 and checks if its at max(10) - outputs message.
             self.__quality = 10
             quality = self.__quality
@@ -345,6 +416,10 @@ class Catalyst(Reagent):
             quality += 1.1 
             self.__quality = quality 
             print(f"{self.getName()}'s quality is now at: {quality}")
+
+        boostPotency = quality * potency
+        self.setPotency = boostPotency
+          
 
     def getQuality(self):
         return self.__quality
@@ -356,13 +431,13 @@ testLab = Laboratory()
 test.collectReagent("Irit", 2)
 test.collectReagent("Avantoe", 1)
 test.collectReagent("Eye of Newt", 1)
-
+test.refineReagent()
 #test.collectReagent("Irit", 2)
 test.mixPotion("Super Attack")
 test.mixPotion("Extreme Attack")
 test.drinkPotion("Extreme Attack")
 #test.drinkPotion("Super Attack")
-test.refineReagent()
+
 
 
 #"Super Attack", "Super Strength", "Super Defence", "Super Magic", "Super Ranging", "Super Necromancy", "Extreme Attack", "Extreme Strength", "Extreme Defence", "Extreme Magic", "Extreme Ranging", "Extreme Necromancy"
