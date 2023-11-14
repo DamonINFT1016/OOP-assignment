@@ -376,7 +376,7 @@ class Reagent(ABC):
     def setPotency(self, potency):
         self.__potency = potency
 
-    potency = property(getPotency, setPotency)
+
         
 
 
