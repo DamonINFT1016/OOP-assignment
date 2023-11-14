@@ -58,68 +58,74 @@ class Alchemist():
         for potions in self.__laboratory._Laboratory__potions: #Checks potions list for the potion name that was passed in. This method was used because there is no getter method in the uml diagram.
             if potions.getName() == potion:
                 self.__laboratory._Laboratory__potions.remove(potions) #Removes potion from the list
-                print(f"{potions.getName()} was drunk!")
+                print(f"----------------------------\n{potions.getName()} was drunk!\n----------------------------")
                 drunk = True
                 type = potions.getName().split()
 
                 if type[1] == "Attack": # Checks type string (Attack) and assigns a stat value depending on the type name
                     self.__attack = potions.getBoost()
                     Value = potions.getBoost()
-                    print(Value)
                     if self.__attack >= 101:
                         self.__attack = 100
                     elif self.__attack <= 0:
                         self.__attack = 0
+                    
+                    print(f"Your {type[1]} is now: {self.__attack}")
 
 
                 elif type[1] == "Strength":
                     self.__strength = potions.getBoost()
                     Value = potions.getBoost()
-                    print(Value)
                     if self.__attack >= 101:
                         self.__attack = 100
                     elif self.__attack <= 0:
                         self.__attack = 0
+
+                    print(f"Your {type[1]} is now: {self.__strength}")
 
 
                 elif type[1] == "Defence":
                     self.__defence = potions.getBoost()
                     Value = potions.getBoost()
-                    print(Value)
                     if self.__attack >= 101:
                         self.__attack = 100
                     elif self.__attack <= 0:
                         self.__attack = 0
+
+                    print(f"Your {type[1]} is now: {self.__defence}")
 
 
                 elif type[1] == "Magic":
                     self.__magic = potions.getBoost()
                     Value = potions.getBoost()
-                    print(Value)
                     if self.__attack >= 101:
                         self.__attack = 100
                     elif self.__attack <= 0:
                         self.__attack = 0
+
+                    print(f"Your {type[1]} is now: {self.__magic}")
 
 
                 elif type[1] == "Ranging":
                     self.__ranged = potions.getBoost()
                     Value = potions.getBoost()
-                    print(Value)
                     if self.__attack >= 101:
                         self.__attack = 100
                     elif self.__attack <= 0:
                         self.__attack = 0
+
+                    print(f"Your {type[1]} is now: {self.__ranged}")
 
 
                 elif type[1] == "Necromancy":
                     self.__necromancy = potions.getBoost()
                     Value = potions.getBoost()
-                    print(Value)
                     if self.__attack >= 101:
                         self.__attack = 100
                     elif self.__attack <= 0:
                         self.__attack = 0
+
+                    print(f"Your {type[1]} is now: {self.__necromancy}")
 
 
                 else:
@@ -151,8 +157,7 @@ class Laboratory():
         self.__catalyst = catalyst
 
     def mixPotion(self, name, type, stat, primaryIngredient, secondaryIngredient):
-        print(self.__herbs)
-        print(self.__catalyst)
+
 
         potionName = type + " " + name
 
@@ -165,11 +170,13 @@ class Laboratory():
 
             for herbs in self.__herbs:
                 if herbs.getName() == primaryIngredient: # herbs are stored as memory values and the getter is used to get their name to compare. 
+                    primaryIngredient = herbs
                     primaryValid = True
                     break
 
             for catalysts in self.__catalyst:
                 if catalysts.getName() == secondaryIngredient:
+                    secondaryIngredient = catalysts
                     secondaryValid = True
                     break
 
@@ -186,17 +193,9 @@ class Laboratory():
                 potion.calculateBoost()
                 self.__potions.append(potion)
 
-                for ingrediant in self.__herbs:
-                    if ingrediant.getName == primaryIngredient:
-                        self.__herbs.remove(ingrediant)
+                self.__herbs.remove(primaryIngredient)
+                self.__catalyst.remove(secondaryIngredient)
 
-                for ingrediant in self.__herbs:
-                    if ingrediant.getName == secondaryIngredient:
-                        self.__herbs.remove(ingrediant)
-
-                print(self.__herbs)
-                print(self.__potions)
-                print(self.__catalyst)
 
             elif ingredientsValid == False:
                 print(f"You do not have the correct ingrediants to make {potionName}")
@@ -215,21 +214,25 @@ class Laboratory():
             
             for herbs in self.__herbs:
                 if herbs.getName() == primaryIngredient:
+                    primaryIngredient = herbs
                     primaryValid = True
                     break
 
             for catalysts in self.__catalyst:
                 if catalysts.getName() == primaryIngredient:
+                    primaryIngredient = catalysts
                     primaryValid = True
                     break
 
             for catalysts in self.__catalyst:
                 if catalysts.getName() == secondaryIngredient:
+                    secondaryIngredient = catalysts
                     secondaryValid = True 
                     break
 
             for potions in self.__potions:
                 if potions.getName() == secondaryIngredient:
+                    secondaryIngredient = potions
                     secondaryValid = True
                     break 
 
@@ -240,22 +243,23 @@ class Laboratory():
             if ingredientsValid == True: 
                 potion = ExtremePotion(primaryIngredient, secondaryIngredient, potionName, stat)
                 potion.calculateBoost()
+                secondaryIngredient.getBoost()
                 self.__potions.append(potion)
                 for herbs in self.__herbs:
-                    if herbs.getName() == primaryIngredient: # Finds and removes the ingrediant
+                    if herbs.getName() == primaryIngredient.getName(): # Finds and removes the ingrediant
                         self.__herbs.remove(herbs)
                         break
 
                 for catalysts in self.__catalyst:
-                    if catalysts.getName() == primaryIngredient:
+                    if catalysts.getName() == primaryIngredient.getName():
                         self.__catalyst.remove(catalysts)
 
                 for catalysts in self.__catalyst:
-                    if catalysts.getName() == secondaryIngredient:
+                    if catalysts.getName() == secondaryIngredient.getName():
                         self.__catalyst.remove(catalysts)
 
                 for potions in self.__potions:
-                    if potions.getName() == secondaryIngredient:
+                    if potions.getName() == secondaryIngredient.getName():
                         self.__potions.remove(potions)
 
 
@@ -318,9 +322,9 @@ class SuperPotion(Potion):
         herbPotency = self.__herb.getPotency()
         catalystPotency = self.__catalyst.getPotency()
 
-        self.__boost = (herbPotency + catalystPotency) + 1.5
-        round(self.getBoost, 2)
-        print(self.boost)
+        final_boost = (herbPotency + catalystPotency) + 1.5
+        self.boost = final_boost
+
     
     def getHerb(self):
         return self.__herb
@@ -337,11 +341,14 @@ class ExtremePotion(Potion):
         self.__potion = potion
 
     def calculateBoost(self):
-        reagantPotency = self.__reagant.getPotency()
-        catalystPotency = self.__potion.getBoost()
+        primaryPotency = self.__reagant.getPotency()
+        secondaryPotency = self.__potion.getBoost()
+        print(secondaryPotency)
+        print(primaryPotency)
+        finalBoost = round(primaryPotency * secondaryPotency * 1.5, 2)
 
-        self.__boost = reagantPotency * catalystPotency * 1.5
-        round(self.getBoost, 2)
+        self.boost = finalBoost
+
     
     def getReagant(self):
         return self.__reagant
@@ -385,8 +392,8 @@ class Herb(Reagent):
         potencyValue = Herb.herbDictionary.get(self.getName()) # Retrieves potency
         potency = float(potencyValue[0])
         potency *= 2.5 # Calculates new potency
-        self.setPotency = potency
-        print(f"{self.getName()}'s potency is now at: {potency}")
+        self.setPotency(potency)
+        print(f"{self.getName()}'s potency is now at: {round(potency, 2)}")
 
     def getGrimy(self):
         return self.__grimy
@@ -411,14 +418,14 @@ class Catalyst(Reagent):
         if quality >= 8.9: # Tests quality and sets quality to quality+1.1 and checks if its at max(10) - outputs message.
             self.__quality = 10
             quality = self.__quality
-            print(quality, " it cannot be refined any further")
+            print(round(quality, 2), " it cannot be refined any further")
         else:
             quality += 1.1 
             self.__quality = quality 
-            print(f"{self.getName()}'s quality is now at: {quality}")
+            print(f"{self.getName()}'s quality is now at: {round(quality, 2)}")
 
         boostPotency = quality * potency
-        self.setPotency = boostPotency
+        self.setPotency(boostPotency)
           
 
     def getQuality(self):
@@ -431,11 +438,13 @@ testLab = Laboratory()
 test.collectReagent("Irit", 2)
 test.collectReagent("Avantoe", 1)
 test.collectReagent("Eye of Newt", 1)
+test.collectReagent("Arbuck", 1)
+test.collectReagent("Blood of Orcus", 1)
 test.refineReagent()
 #test.collectReagent("Irit", 2)
-test.mixPotion("Super Attack")
-test.mixPotion("Extreme Attack")
-test.drinkPotion("Extreme Attack")
+test.mixPotion("Super Necromancy")
+#test.mixPotion("Extreme Attack")
+test.drinkPotion("Super Necromancy")
 #test.drinkPotion("Super Attack")
 
 
