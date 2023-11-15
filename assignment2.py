@@ -13,6 +13,10 @@ from abc import ABC, abstractmethod
 #@abstractmethod
 
 class Alchemist():
+    '''
+    The alchemist class is the main class of the program. 
+    In this class the user directly interacts by calling mixPoton, drinkPotion, collectreagant, refinereagant.
+    '''
     def __init__(self, attack = 0, strength = 0, defence = 0, magic = 0, ranged = 0, necromancy = 0, recipes={"Super Attack": ["Irit","Eye of Newt"], "Super Strength" : ["Kwuarm", "Limpwurt Root"], "Super Defence": ["Cadantine", "White Berries"], "Super Magic": ["Lantadyme", "Potato Cactus"], "Super Ranging": ["Dwarf Weed","Wine of Zamorak"], "Super Necromancy" : ["Arbuck", "Blood of Orcus"], "Extreme Attack": ["Avantoe", "Super Attack"], "Extreme Strength": ["Dwarf Weed", "Super Strength"], "Extreme Defence": ["Lantadyme", "Super Defence"], "Extreme Magic": ["Ground Mud Rune", "Super Magic"], "Extreme Ranging": ["Grenwall Spike", "Super Ranging"], "Extreme Necromancy": ["Ground Miasma Rune", "Super Necromancy"]} ):
         self.__attack = attack
         self.__strength = strength
@@ -30,6 +34,10 @@ class Alchemist():
         return self.__recipes
 
     def mixPotion(self, recipe): # recipe (potionName) looks inside of recipe dictionary and retrieves the key values (ingrediants)
+        '''
+        mixPotions is responsible for getting a recipe from the user and sorting through the dictionary of recipes to find the user input recipe.
+        '''
+
         ingredients = self.__recipes.get(recipe) # Pulls the values outside of the dictionary into a list
         primary = str(ingredients[0]) # Breaks list into 2 string values
         secondary = str(ingredients[1])
@@ -54,6 +62,9 @@ class Alchemist():
         self.__laboratory.mixPotion(type, potionName, stat, primary, secondary) # Passes values to lab.mixPotion
         
     def drinkPotion(self, potion):
+        '''
+        Drink potion is responsible for getting the requested drink from the laboratory potions list and consuming it. Stats are added to the alchemist and the potion is removed from the inventory.
+        '''
         drunk = False    
         for potions in self.__laboratory._Laboratory__potions: #Checks potions list for the potion name that was passed in. This method was used because there is no getter method in the uml diagram.
             if potions.getName() == potion:
@@ -70,7 +81,7 @@ class Alchemist():
                     elif self.__attack <= 0:
                         self.__attack = 0
                     
-                    print(f"Your {type[1]} is now: {self.__attack}")
+                    print(f"Your {type[1]} skill is now: {self.__attack}")
 
 
                 elif type[1] == "Strength":
@@ -139,26 +150,38 @@ class Alchemist():
 
             
 
-    def collectReagent(self, reagant, amount):
+    def collectReagant(self, reagant, amount):
+        '''
+        collectReagant is responsible telling the laboratory addReagant method which reagant the user has picked up (passed in).
+        '''
         self.__laboratory.addReagant(reagant, amount)
 
-    def refineReagent(self):
-        for reagent in self.__laboratory._Laboratory__herbs:
-            Herb.refine(reagent)
-        for reagent in self.__laboratory._Laboratory__catalyst:
-            Catalyst.refine(reagent)
+    def refineReagant(self):
+        '''
+        Loops through herbs list and catalyst list from Laboratory and sends each object to a refine method. 
+        '''
+        for reagant in self.__laboratory._Laboratory__herbs:
+            Herb.refine(reagant)
+        for reagant in self.__laboratory._Laboratory__catalyst:
+            Catalyst.refine(reagant)
 
 
 
 class Laboratory():
+    '''
+    The laboratory class is responsible for inventory management and the construction of potion, herb and catalyst object creation.
+    This class is a composite class owned by alchemist. 
+    Potions and Reagants have an association relationship with Laboratory
+    '''
     def __init__(self, potions = [], herbs = [], catalyst = [] ):
         self.__potions = potions 
         self.__herbs = herbs
         self.__catalyst = catalyst
 
     def mixPotion(self, name, type, stat, primaryIngredient, secondaryIngredient):
-
-
+        '''
+    
+        '''
         potionName = type + " " + name
 
         if potionName == "Super Attack" or potionName == "Super Strength" or potionName == "Super Defence" or potionName == "Super Magic" or potionName == "Super Ranging" or potionName == "Super Necromancy":
@@ -273,20 +296,27 @@ class Laboratory():
        
 
     def addReagant(self, reagant, amount):
+        '''
+        This class takes the reagant and the amount from the alchemist collectReagant method and makes them into objects. These objects are then stored into the Herb or Catalyst list.
+        '''
+
         if reagant == "Irit" or reagant == "Kwuarm" or reagant == "Cadantine" or reagant == "Lantadyme" or reagant == "Dwarf Weed" or reagant == "Arbuck" or reagant == "Avantoe":
-            reagentInstance = Herb(reagant)
+            reagantInstance = Herb(reagant)
             while amount > 0:
-                self.__herbs.append(reagentInstance)
+                self.__herbs.append(reagantInstance)
                 amount -= 1
         if reagant == "Eye of Newt" or reagant == "Limpwurt Root" or reagant == "White Berries" or reagant == "Potato Cactus" or reagant == "Wine of Zamorak" or reagant == "Blood of Orcus" or reagant == "Ground Mud Rune" or reagant == "Grenwall Spike" or reagant == "Ground Miasma Rune":
-            reagentInstance = Catalyst(reagant)
+            reagantInstance = Catalyst(reagant)
             while amount > 0:
-                self.__catalyst.append(reagentInstance)
+                self.__catalyst.append(reagantInstance)
                 amount -= 1
 
 
 
 class Potion(ABC):
+    '''
+    Potion is a parent class for SuperPotion and ExtremePotion. 
+    '''
     def __init__(self, name = "name", stat = 0, boost = 1.0):
         self.__name = name
         self.__stat = stat
@@ -313,12 +343,21 @@ class Potion(ABC):
 
 
 class SuperPotion(Potion):
+    '''
+    Super Potion takes a herb and catyst object from Laboratory.mixPotion.
+    Using the objects potency values in a formula the super potion's boost is created using the boost property from Potion. 
+    The object is created and passed back to Laboratory.mixPotion.
+    SuperPotion is a child class of the Potion class.
+    '''
     def __init__(self, herb, catalyst, name="name", stat=0, boost=1.0): 
         super().__init__(name, stat, boost)
         self.__herb = herb
         self.__catalyst = catalyst
 
     def calculateBoost(self):
+        '''
+        Takes passed in herb object and catalyst object's potency values and adds them and + 1.5.
+        '''
         herbPotency = self.__herb.getPotency()
         catalystPotency = self.__catalyst.getPotency()
 
@@ -335,12 +374,21 @@ class SuperPotion(Potion):
 
 
 class ExtremePotion(Potion):
+    '''
+    Extreme potion takes a reagant object either herb or catalyst as the first ingredient then takes a super varient of the extreme potion its trying to make. 
+    The super potion passed in as the second ingredient's boost is times by the first ingredient's potency value then x 1.5.
+    Extreme potion object is created and passed back to Laboratory.mixPotion.
+    Extreme potion is the child class of the Potion class. 
+    '''
     def __init__(self, reagant, potion, name="name", stat=0, boost=1.0 ):
         super().__init__(name, stat, boost)
         self.__reagant = reagant
         self.__potion = potion
 
     def calculateBoost(self):
+        '''
+        Takes passed in reagant object and superPotion object's potency and boost values and times them and times 1.5.
+        '''
         primaryPotency = self.__reagant.getPotency()
         secondaryPotency = self.__potion.getBoost()
         print(secondaryPotency)
@@ -358,7 +406,11 @@ class ExtremePotion(Potion):
 
 
 
-class Reagent(ABC):
+class Reagant(ABC):
+    '''
+    reagant is the parent class of the Herb and Catalyst class. 
+    reagant has an association relationship with the Lab
+    '''
     def __init__(self, name = "name", potency = 1.0):
         self.__name = name
         self.__potency = potency
@@ -380,7 +432,12 @@ class Reagent(ABC):
         
 
 
-class Herb(Reagent):
+class Herb(Reagant):
+    '''
+    Inherits attributes from reagant.
+    Used to create Herb objects.
+    refines reagant's potency for a higher value potion boost. 
+    '''
     herbDictionary = {"Arbuck": [2.6], "Avantoe": [3.0], "Cadantine": [1.5], "Dwarf Weed": [2.5], "Irit": [1.0], "Kwuarm": [1.2], "Lantadyme": [2.0], "Torstol": [4.5]}
 
     def __init__(self, name="name", grimy = True):
@@ -388,6 +445,9 @@ class Herb(Reagent):
         self.__grimy = grimy
 
     def refine(self):
+        '''
+        Sets grimy attribute to False, and potency (default 1.0) is times by 2.5.
+        '''
         self.setGrimy(False)
         potencyValue = Herb.herbDictionary.get(self.getName()) # Retrieves potency
         potency = float(potencyValue[0])
@@ -404,7 +464,12 @@ class Herb(Reagent):
       
 
 
-class Catalyst(Reagent):
+class Catalyst(Reagant):
+    '''
+    Inherits attributes from reagant.
+    Used to create Catalyst objects.
+    refines reagant's potency and quality for a higher value potion boost. 
+    '''
     catalystDictionary = {"Eye of Newt" : [4.3, 1.0], "Limpwurt Root" : [3.6, 1.7], "White Berries" : [1.2, 2.0], "Potato Cactus" : [7.3, 0.1], "Wine of Zamorak" : [1.7, 5.0], "Blood of Orcus" : [4.5, 2.2], "Ground Mud Rune" : [2.1, 6.7], "Grenwall Spike" : [6.3, 4.9], "Ground Miasma Rune" : [3.3, 5.2] }
 
     def __init__(self, name="name", quality = 0.0):
@@ -412,6 +477,9 @@ class Catalyst(Reagent):
         self.__quality = quality
 
     def refine(self):
+        '''
+    
+        '''
         values = Catalyst.catalystDictionary.get(self.getName())
         quality = float(values[1])
         potency = float(values[0])
@@ -435,33 +503,15 @@ class Catalyst(Reagent):
 
 test = Alchemist()
 testLab = Laboratory()
-test.collectReagent("Irit", 2)
-test.collectReagent("Avantoe", 1)
-test.collectReagent("Eye of Newt", 1)
-test.collectReagent("Arbuck", 1)
-test.collectReagent("Blood of Orcus", 1)
-test.refineReagent()
-#test.collectReagent("Irit", 2)
+
+test.collectReagant("Irit", 2)
+test.collectReagant("Avantoe", 1)
+test.collectReagant("Eye of Newt", 1)
+test.collectReagant("Arbuck", 1)
+test.collectReagant("Blood of Orcus", 1)
+
+test.refineReagant()
+
 test.mixPotion("Super Necromancy")
-#test.mixPotion("Extreme Attack")
 test.drinkPotion("Super Necromancy")
-#test.drinkPotion("Super Attack")
-
-
-
-#"Super Attack", "Super Strength", "Super Defence", "Super Magic", "Super Ranging", "Super Necromancy", "Extreme Attack", "Extreme Strength", "Extreme Defence", "Extreme Magic", "Extreme Ranging", "Extreme Necromancy"
-
-#TODO
-#class Potion creation
-#composition between lab and alchemist
-#collectReagant - this needs to be the input that then leads addReagant inside of lab.
-#Need to pass in the recipe ingrediants from inside alchemist mixPotions into Lab mixpotions as primary and secondary
-#Calculate boost.
-#Also need to distinguish non refined to refined reagants.
-#reagants will eventually all be refined all at once.
-#drink potion() - probably use a dictionary
-#Testing
-#Error Handling
-# Doc strings
-# if 0 <= stength <=100:
 

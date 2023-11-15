@@ -11,12 +11,65 @@ import unittest
 
 from assignment2 import *
 
-class TestGetRecipe(unittest.TestCase):
+class TestMixPotion(unittest.TestCase):
     def testGetRecipe(self):
-        alchemist = Alchemist("Super Attack")
-        self.assertEqual("Super Attack", alchemist.getRecipies())
+        recipe = Alchemist.mixPotion("Super Attack")
+        self.assertEqual("Super Attack", recipe)
 
 
 
+class TestRefineReagant(unittest.TestCase):
+    def testGetRecipe(self):
+        recipe = Alchemist.mixPotion("Super Attack")
+        self.assertEqual("Super Attack", recipe)
+
+class TestCollectReagant(unittest.TestCase):
+    def testGetRecipe(self):
+        recipe = Alchemist.mixPotion("Super Attack")
+        self.assertEqual("Super Attack", recipe)
+
+class TestLabMixPotion(unittest.TestCase):
+    def testGetRecipe(self):
+        recipe = Alchemist.mixPotion("Super Attack")
+        self.assertEqual("Super Attack", recipe)
+
+    
+class TestAddReagant(unittest.TestCase):
+    def testGetRecipe(self):
+        recipe = Alchemist.mixPotion("Super Attack")
+        self.assertEqual("Super Attack", recipe)
+
+class TestSuperCalculateBoost(unittest.TestCase):
+    def testGetRecipe(self):
+        recipe = Alchemist.mixPotion("Super Attack")
+        self.assertEqual("Super Attack", recipe)
+
+
+class TestExtremeCalculateBoost(unittest.TestCase):
+    def testGetRecipe(self):
+        recipe = Alchemist.mixPotion("Super Attack")
+        self.assertEqual("Super Attack", recipe)
+
+
+class TestHerbRefine(unittest.TestCase):
+    def testGetRecipe(self):
+        recipe = Alchemist.mixPotion("Super Attack")
+        self.assertEqual("Super Attack", recipe)
+
+class TestCatalystRefine(unittest.TestCase):
+    def testGetRecipe(self):
+        recipe = Alchemist.mixPotion("Super Attack")
+        self.assertEqual("Super Attack", recipe)
 
 unittest.main()
+
+
+#alchemist.drinkPotion
+#alchemist.refineReagant
+#alchemist.collectReagant
+#lab.mixPotion
+#lab.addReagant
+#superPotion.calculateBoost
+#extremePotion.calculateBoost
+#herb.refine
+#catalyst.refine
