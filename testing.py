@@ -11,55 +11,37 @@ import unittest
 
 from assignment2 import *
 
-class TestMixPotion(unittest.TestCase):
-    def testGetRecipe(self):
-        recipe = Alchemist.mixPotion("Super Attack")
-        self.assertEqual("Super Attack", recipe)
+class TestMixingPotion(unittest.TestCase):
+    def testMixingPotion(self):
+        test = Alchemist
+        test.mixPotion(self, "Super Attack")
+
+
+
+class TestDrinkPotion(unittest.TestCase):
+    def testDrinkingPotion(self):
+        test = Alchemist
+        test.drinkPotion(self, "Super Attack")
+        self.assertEqual(test._Alchemist__attack, 3.5)
+
+
+
+class TestCollectReagant(unittest.TestCase):
+    def testCollect(self):
+        test = Alchemist
+        test.collectReagant("Irit")
+         
 
 
 
 class TestRefineReagant(unittest.TestCase):
-    def testGetRecipe(self):
-        recipe = Alchemist.mixPotion("Super Attack")
-        self.assertEqual("Super Attack", recipe)
-
-class TestCollectReagant(unittest.TestCase):
-    def testGetRecipe(self):
-        recipe = Alchemist.mixPotion("Super Attack")
-        self.assertEqual("Super Attack", recipe)
-
-class TestLabMixPotion(unittest.TestCase):
-    def testGetRecipe(self):
-        recipe = Alchemist.mixPotion("Super Attack")
-        self.assertEqual("Super Attack", recipe)
-
-    
-class TestAddReagant(unittest.TestCase):
-    def testGetRecipe(self):
-        recipe = Alchemist.mixPotion("Super Attack")
-        self.assertEqual("Super Attack", recipe)
-
-class TestSuperCalculateBoost(unittest.TestCase):
-    def testGetRecipe(self):
-        recipe = Alchemist.mixPotion("Super Attack")
-        self.assertEqual("Super Attack", recipe)
+    def testRefine(self):
+        test = Alchemist
+        test.refineReagant(self)
 
 
-class TestExtremeCalculateBoost(unittest.TestCase):
-    def testGetRecipe(self):
-        recipe = Alchemist.mixPotion("Super Attack")
-        self.assertEqual("Super Attack", recipe)
 
 
-class TestHerbRefine(unittest.TestCase):
-    def testGetRecipe(self):
-        recipe = Alchemist.mixPotion("Super Attack")
-        self.assertEqual("Super Attack", recipe)
-
-class TestCatalystRefine(unittest.TestCase):
-    def testGetRecipe(self):
-        recipe = Alchemist.mixPotion("Super Attack")
-        self.assertEqual("Super Attack", recipe)
 
 unittest.main()
 
