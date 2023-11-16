@@ -10,7 +10,7 @@ This is my own work as defined by the University's Academic Misconduct Policy.
 
 from abc import ABC, abstractmethod
 
-#@abstractmethod
+
 
 class Alchemist():
     '''
@@ -27,7 +27,7 @@ class Alchemist():
         self.__laboratory = Laboratory()
         self.__recipes = recipes
     
-    def getlaboratory(self):
+    def getLaboratory(self):
         return self.__laboratory
 
     def getRecipes(self):
@@ -37,13 +37,15 @@ class Alchemist():
         '''
         mixPotions is responsible for getting a recipe from the user and sorting through the dictionary of recipes to find the user input recipe.
         '''
-
-        ingredients = self.__recipes.get(recipe) # Pulls the values outside of the dictionary into a list
-        primary = str(ingredients[0]) # Breaks list into 2 string values
-        secondary = str(ingredients[1])
-        nameString = recipe.split() # Splits potionName into 2 strings EXAMPLE (Exteme) (Attack)
-        potionName = str(nameString[0]) # Assigns each string to a new value
-        type = str(nameString[1])
+        try:
+            ingredients = self.__recipes.get(recipe) # Pulls the values outside of the dictionary into a list
+            primary = str(ingredients[0]) # Breaks list into 2 string values
+            secondary = str(ingredients[1])
+            nameString = recipe.split() # Splits potionName into 2 strings EXAMPLE (Exteme) (Attack)
+            potionName = str(nameString[0]) # Assigns each string to a new value
+            type = str(nameString[1])
+        except TypeError as exception:
+            print(f"Error caught:  {exception}")
         
         if type == "Attack": # Checks type string (Attack) and assigns a stat value depending on the type name
             stat = "attack"
@@ -141,16 +143,15 @@ class Alchemist():
 
                 else:
                     print("Error")
+                break    
 
-
-                break
         if drunk == False:
             print("Potion was not found")
 
 
             
 
-    def collectReagant(self, reagant, amount):
+    def collectReagant(self, reagant, amount = 1):
         '''
         collectReagant is responsible telling the laboratory addReagant method which reagant the user has picked up (passed in).
         '''
@@ -186,7 +187,7 @@ class Laboratory():
 
         if potionName == "Super Attack" or potionName == "Super Strength" or potionName == "Super Defence" or potionName == "Super Magic" or potionName == "Super Ranging" or potionName == "Super Necromancy":
 
-            # NEEDS TO CHECK IF INGREDIANT IS IN LIST
+            # NEEDS TO CHECK IF INGREDIENT IS IN LIST
             ingredientsValid = False
             primaryValid = False
             secondaryValid = False
